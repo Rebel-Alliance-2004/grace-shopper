@@ -108,23 +108,24 @@ export const getProductsThunk = () => (dispatch) => {
     });
 };
 
-export const addProductThunk = (obj) => async (dispatch) => axios
-  .post('/api/products', {
+export const addProductThunk = (obj) => (dispatch) => {
+  const newProd = {
     price: obj.price,
     name: obj.name,
     description: obj.description,
     categoryId: obj.categoryId,
-  })
-  .then(() => axios.get('/api/products'))
-  .then((res) => {
-    dispatch({
-      type: types.ADD_PRODUCT,
-      payload: res.data.products,
+  };
+  axios.post('/api/products', newProd)
+    .then(() => {
+      dispatch({
+        type: types.ADD_PRODUCT,
+        payload: newProd,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
     });
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+};
 
 export const deleteProductThunk = (id) => async (dispatch) => {
   const deletedProd = { id };
@@ -141,7 +142,7 @@ export const deleteProductThunk = (id) => async (dispatch) => {
     });
 };
 
-export const updateProductThunk = (product, history) => async (dispatch) => axios.put(`/api/products/${product.id}`, product)
+export const updateProductThunk = (product, history) => (dispatch) => axios.put(`/api/products/${product.id}`, product)
   .then((res) => {
     dispatch({
       type: types.SET_PRODUCT,
@@ -169,20 +170,19 @@ export const getCategoriesThunk = () => (dispatch) => {
     });
 };
 
-export const addCategoryThunk = (obj) => async (dispatch) => axios
-  .post('/api/category', {
-    name: obj.name,
-  })
-  .then(() => axios.get('/api/category'))
-  .then((res) => {
-    dispatch({
-      type: types.ADD_CATEGORY,
-      payload: res.data.categories,
+export const addCategoryThunk = (obj) => (dispatch) => {
+  const newCat = { name: obj.name };
+  axios.post('/api/category', newCat)
+    .then(() => {
+      dispatch({
+        type: types.ADD_CATEGORY,
+        payload: newCat,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
     });
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+};
 
 export const deleteCategoryThunk = (id) => async (dispatch) => {
   const deletedCat = { id };
@@ -199,7 +199,7 @@ export const deleteCategoryThunk = (id) => async (dispatch) => {
     });
 };
 
-export const updateCategory = (id, name, history) => async (dispatch) => {
+export const updateCategory = (id, name, history) => (dispatch) => {
   const updatedCat = { id, name };
   return axios.put(`/api/categories/${id}`, updatedCat)
     .then((res) => {
