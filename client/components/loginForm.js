@@ -4,26 +4,22 @@ import { Login, Logout, Loading } from './index';
 import { whoami } from '../store/actionCreators';
 
 const LoginForm = ({ user, whoami, loading }) => {
+  useEffect(() => {
+    whoami();
+  }, []);
 
-    useEffect(() => {
-        whoami();
-    }, []);
-
-    return (
-        <div className='box'>
-            {
-                loading ? <Loading /> : !!user.username ? <Logout /> : <Login/>
+  return (
+    <div className="box login-box">
+      {
+                loading ? <Loading /> : user.username ? <Logout /> : <Login />
             }
-        </div>
-    )
-}
-
+    </div>
+  );
+};
 
 const mapStateToProps = ({ user, loading }) => ({ user, loading });
-const mapDispatchToProps = (dispatch) => {
-    return {
-        whoami: () => dispatch(whoami())
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+  whoami: () => dispatch(whoami()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

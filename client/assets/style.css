@@ -46,3 +46,16 @@ nav{
 body{
   color: white;
 }
+
+.login-box{
+  width: 33vw;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
