@@ -107,7 +107,7 @@ export const getProductsThunk = () => (dispatch) => {
       return 'Error fetching products';
     });
 };
-
+          
 export const addProductThunk = (obj) => (dispatch) => {
   const newProd = {
     price: obj.price,
@@ -214,6 +214,7 @@ export const updateCategory = (id, name, history) => (dispatch) => {
       console.log(e);
     });
 };
+
 
 export const addToCartThunk = (productId, quantity) => (dispatch) => {
   dispatch(loading());

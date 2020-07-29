@@ -1,8 +1,9 @@
 const { Router } = require("express");
-const cartRouter = Router();
-const chalk = require("chalk");
 
-const { Cart, Product } = require("../db/models/index");
+const cartRouter = Router();
+const chalk = require('chalk');
+
+const { Cart, Product } = require('../db/models/index');
 
 cartRouter.post('/add/:id', async (req, res) => {
     try {
@@ -12,9 +13,9 @@ cartRouter.post('/add/:id', async (req, res) => {
         await cart.addItem(id, quantity);
         const updatedCart = await Cart.findOne({
             where: {
-                id: req.cart_id
+                id: req.cart_id,
             },
-            include: [Product]
+            include: [Product],
         });
         console.log(chalk.cyan('Product Added'));
         res.send(updatedCart);
