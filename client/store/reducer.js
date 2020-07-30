@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunks from 'redux-thunk';
 
 import {
-  LOGIN, LOGOUT, LOGIN_FAIL, LOADING, LOADED, GET_PRODUCTS, ADD_TO_CART, GET_CART, types,
+  LOGIN, LOGOUT, LOGIN_FAIL, LOADING, LOADED, GET_PRODUCTS, ADD_TO_CART, GET_CART, types, CREATE_ACCOUNT
 } from './actions';
 
 const initialUserState = {
@@ -34,6 +34,14 @@ const loginReducer = (state = initialUserState, action) => {
         loggedIn: false,
         message: action.message,
       };
+    }
+    case CREATE_ACCOUNT: {
+      return {
+        username: action.username,
+        loggedIn: true,
+        role: 'customer',
+        message: ''
+      }
     }
     default:
       return state;

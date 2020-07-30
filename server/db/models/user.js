@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { UUID, UUIDV4, STRING, ENUM } = require('sequelize');
 const { db } = require('../db');
 
@@ -28,5 +29,11 @@ const User = db.define('User', {
     allowNull: false
   }
 })
+
+User.beforeCreate(async (instance) => {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(instance.password, saltRounds);
+  instance.password = hash;
+});
 
 module.exports = { User };

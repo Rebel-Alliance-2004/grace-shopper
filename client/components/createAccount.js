@@ -1,88 +1,90 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Flex } from '@chakra-ui/core';
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/core';
+import createAccountThunk from '../store/userActions';
 
-const CreateAccount = () => {
+const CreateAccount = ({ createAccount, history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: make this work
-    console.log(email, password, username)
+    createAccount(username, password);
+    history.push('/products');
   }
 
   return (
     <Flex
       align='center'
       justify='center'
+      direction='column'
       bg='white'
       minW='sm'
       maxW='md'
       p='1em'
     >
-      <form className='form' id='createAccount'>
-        <label
-          htmlFor='email'
-          className='label'
-        >
-          Email:
-          <input
-            type="text"
-            value={email}
-            id="email"
-            placeholder="email"
-            onChange={
-              (e) => setEmail(e.target.value)
-            }
-            className='input'
-          />
-        </label>
-        <label
-          htmlFor='username'
-          className='label'
-        >
-          Username:
-          <input
-            type="text"
-            value={username}
-            id="username"
-            placeholder="username"
-            onChange={
-              (e) => setUsername(e.target.value)
-            }
-            className='input'
-          />
-        </label>
-        <label
-          htmlFor='username'
-          className='label'
-        >
-          Password:
-          <input
-            type="password"
-            value={password}
-            id="password"
-            placeholder="password"
-            required
-            onChange={
-              (e) => setPassword(e.target.value)
-            }
-            className='input'
-          />
-        </label>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          size='lg'
-          variantColor='green'
-        >
-          Create Account
-        </Button>
-      </form>
+      <FormControl
+        color='black'
+        isRequired
+      >
+        <FormLabel htmlFor="emailCA">Email address</FormLabel>
+        <input
+          type="email"
+          id="emailCA"
+          className='input'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </FormControl>
+      <FormControl
+        color='black'
+        isRequired
+      >
+        <FormLabel htmlFor="usernameCA">Username</FormLabel>
+        <input
+          type="text"
+          id="usernameCA"
+          className='input'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </FormControl>
+      <FormControl
+        color='black'
+        isRequired
+      >
+        <FormLabel htmlFor="passwordCA">Password</FormLabel>
+        <input
+          type="password"
+          id="passwordCA"
+          className='input'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </FormControl>
+      <Button
+        type="submit"
+        onClick={handleSubmit}
+        size='lg'
+        variantColor='green'
+        mt='1em'
+      >
+        Create Account
+      </Button>
     </Flex>
   );
 }
 
-export default connect(null)(CreateAccount);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createAccount: (uname, pword) => dispatch(createAccountThunk(uname, pword))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(CreateAccount);

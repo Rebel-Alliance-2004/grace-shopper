@@ -100,7 +100,7 @@ userRouter.get("/whoami", (req, res) => {
     res.send({
       username: req.user.username,
       loggedIn: true,
-      role: req.user.role ,
+      role: req.user.role,
     });
   } else {
     res.send({
@@ -114,7 +114,7 @@ userRouter.get("/logout", async (req, res) => {
   try {
     res.clearCookie("session_id");
     res.clearCookie("cart_id");
-    console.log(chalk.black(chalk.bgGreen(`${req.user.username} LOGGED OUT`)));
+    console.log(chalk.black(chalk.bgGreen(`LOGGED OUT`)));
     res.sendStatus(200);
   } catch (e) {
     console.log(e)
@@ -128,13 +128,19 @@ userRouter.get("/users", async (req, res) => {
   res.status(200).send(users);
 });
 
-userRouter.post("/users", async (req, res) => {
-  const { username, password, role } = req.body;
-  const createdUser = await User.create({ username, password, role })
-  res.status(201).send({
-    user: createdUser,
-    message: `User ${username} created sucessfully`
-  })
+userRouter.post("/create", async (req, res) => {
+  try {
+    const { username, password, role } = req.body;
+    const createdUser = await User.create({ username, password, role });
+    const session = await Session.findByPk(req.session_id);
+    await session.update({ UserId: createdUser.id });
+    const cart = await Cart.findByPk(req.cart_id);
+    await cart.update({ userId: createdUser.id });
+    res.status(201).send(createdUser)
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 })
 
 userRouter.put('/users/:id', async (req, res) => {
