@@ -9,18 +9,21 @@ const initialUserState = {
   username: null,
   loggedIn: false,
   role: 'guest',
+  message: ''
 };
 
 const loginReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case LOGIN:
       return {
+        ...state,
         username: action.username,
         loggedIn: true,
         role: action.role,
       };
     case LOGOUT:
       return {
+        ...state,
         username: null,
         loggedIn: false,
         role: 'guest'

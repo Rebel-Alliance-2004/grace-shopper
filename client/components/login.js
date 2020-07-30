@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@chakra-ui/core';
 import { connect } from 'react-redux';
 import { loginThunk } from '../store/actionCreators';
 
@@ -24,7 +25,6 @@ const Login = ({ login, user }) => {
           value={username}
           id="username"
           placeholder="rebelalliance"
-          required
           onChange={
             (e) => setUsername(e.target.value)
           }
@@ -48,13 +48,14 @@ const Login = ({ login, user }) => {
           className='input'
         />
       </label>
-      <button
+      <Button
         type="submit"
         onClick={handleSubmit}
-        className="button is-primary"
+        size='lg'
+        variantColor='green'
       >
         Login
-      </button>
+      </Button>
       <p>{user && user.message}</p>
     </form>
   );

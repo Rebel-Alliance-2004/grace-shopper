@@ -41,12 +41,12 @@ Cart.prototype.addItem = async function (productId, quantity) {
       quantity
     })
   }
-  await this.addToTotal(productId, productCart);
+  await this.addToTotal(productId, quantity);
 }
 
-Cart.prototype.addToTotal = async function (id, productCart) {
+Cart.prototype.addToTotal = async function (id, qty) {
   const product = await Product.findOne({ where: { id } });
-  const newTotal = await +this.total + +(product.price * productCart.quantity);
+  const newTotal = await +this.total + (+product.price * +qty);
   await this.update({ total: newTotal });
 }
 

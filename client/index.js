@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider, CSSReset, ColorModeProvider } from '@chakra-ui/core';
+import { ThemeProvider, CSSReset, ColorModeProvider, } from '@chakra-ui/core';
 import store from './store';
 import {
   ProductList, LoginForm, Cart, NavBar, Categories, Home, SingleCategory
@@ -22,7 +22,7 @@ const App = () => (
             <Route exact path="/categories" component={Categories} />
             <Route exact path="/categories/:name" component={SingleCategory} />
             <Route exact path="/musicians" />
-            <Route exact path="/login" component={LoginForm} />
+            <Route exact path="/login" component={LoginPage} />
           </Switch>
         </ColorModeProvider>
       </ThemeProvider>

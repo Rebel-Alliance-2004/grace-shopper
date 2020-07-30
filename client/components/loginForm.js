@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Flex } from "@chakra-ui/core";
 import Login from './login';
 import Logout from './logout';
 import Loading from './loading';
@@ -14,11 +15,18 @@ const LoginForm = ({ user, whoAmI, loading }) => {
     return user.username ? <Logout /> : <Login />;
   }
   return (
-    <div className="box box-container">
+    <Flex
+      align='center'
+      justify='center'
+      bg='white'
+      minW='sm'
+      maxW='md'
+      p='1em'
+    >
       {
         loading ? <Loading /> : showLoginOrLogout()
       }
-    </div>
+    </Flex>
   );
 };
 
