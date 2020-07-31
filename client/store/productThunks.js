@@ -9,7 +9,7 @@ export const updateProductThunk = (id, name, price, description, history) => (di
           type: types.ADD_PRODUCT,
           payload: res.data
       })
-      history.push('/admin/Products')
+      history.push('/adminproducts')
   })
   .catch((e)=>{
       console.log('failed to update Product')
@@ -42,7 +42,7 @@ export const deleteProductThunk = (id, history)=> async (dispatch)=>{
               type: types.ADD_PRODUCT,
               payload: res.data
           })
-          history.push('/admin/products')
+          history.push('/adminproducts')
       })
       .catch((e)=>{
           console.log('failed to delete Product')

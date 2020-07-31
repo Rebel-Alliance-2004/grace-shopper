@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCategoriesThunk } from '../store/actionCreators';
-import store from '../store/reducer';
 
 class AdminCategories extends Component{
   constructor(){
@@ -15,10 +14,11 @@ class AdminCategories extends Component{
 
   async componentDidMount(){
     await this.props.getCategories();
-    this.setState({categories: store.getState().categories})
+    this.setState({categories: this.props.categories})
   }
 
   render(){
+    // const { url, path } = useRouteMatch();
     const { categories } = this.state.categories;
     return(
       <div>
@@ -28,7 +28,7 @@ class AdminCategories extends Component{
           categories.map(category => {
               return (
                 <div key={category.id}>
-                  <Link to={`/admin/category/${category.id}`} className='title tag is-white is-large'>{category.name}</Link>
+                  <Link to={`admincategory/${category.id}`} className='title tag is-white is-large'>{category.name}</Link>
                 </div>
               ) 
             })}

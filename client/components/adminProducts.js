@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import store from '../store/reducer';
 import { getProductsThunk } from '../store/actionCreators';
-
+import AddProductForm from './addProductForm';
 
 class AdminProducts extends Component{
   constructor(){
@@ -16,7 +15,7 @@ class AdminProducts extends Component{
 
   async componentDidMount(){
     await this.props.getProducts();
-    this.setState({products: store.getState().products})
+    this.setState({products: this.props.products})
   }
 
   render(){
@@ -24,12 +23,13 @@ class AdminProducts extends Component{
     
     return(
       <div>
+        <AddProductForm />
         <h1>Select the product you would like to edit.</h1>
         <div>
           {products.map(product => {
               return (
                 <div key={product.id}>
-                  <Link to={`/admin/product/${product.id}`} className='title tag is-white is-large'>{product.name}</Link>
+                  <Link to={`/adminproduct/${product.id}`} className='title tag is-white is-large'>{product.name}</Link>
                 </div>
               ) 
             })}
