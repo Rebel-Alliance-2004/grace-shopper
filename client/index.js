@@ -26,7 +26,7 @@ const App = () => (
             basename='/admin'
           >
             <Route exact path="/categories" component={AdminCategories} />
-            <Route exact path="/categories/:name" component={SingleCategory} />
+            <Route exact path="/categories/:id/:name" component={SingleCategory} />
             <Route exact path="/products" component={AdminProducts} />
             <Route exact path="/product/:id" component={EditProduct} />
           </BrowserRouter>
