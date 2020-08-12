@@ -18,11 +18,15 @@
     "@chakra-ui/core": "^0.8.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.8.0",
+    "aws-sdk": "^2.727.1",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
     "bulma": "^0.9.0",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.27",
     "express": "^4.17.1",
     "pg": "^8.3.0",
@@ -30,9 +34,11 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
+    "react-star-ratings": "^2.3.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^6.3.3"
+    "sequelize": "^6.3.3",
+    "stripe": "^8.83.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

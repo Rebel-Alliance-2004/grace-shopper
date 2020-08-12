@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const { UUID, UUIDV4, DECIMAL, BOOLEAN } = require('sequelize');
 const { db } = require('../db');
 

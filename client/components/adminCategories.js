@@ -2,35 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCategoriesThunk } from '../store/actionCreators';
-import store from '../store/reducer';
+import AddCategoryForm from './addCategoryForm';
 
-class AdminCategories extends Component{
-  constructor(){
-    super()
+class AdminCategories extends Component {
 
-    this.state={
-      categories: []
-    }
-  }
-
-  async componentDidMount(){
+  async componentDidMount() {
     await this.props.getCategories();
-    this.setState({categories: store.getState().categories})
   }
 
-  render(){
-    const { categories } = this.state.categories;
-    return(
-      <div>
-        <h1>Categories</h1>
-        <div>
+  render() {
+    const { categories } = this.props;
+    return (
+      <div style={{padding:'30px'}}>
+        <h1 className='title' style={{color:'white'}}>Categories</h1>
+        <AddCategoryForm />
+        <div style={{margin: 'auto', width:'85%', marginTop:'30px' }} className='box'>
+          <h1 className='subtitle'>Select the Category you would like to edit.</h1>
           {categories &&
-          categories.map(category => {
+            categories.map(category => {
               return (
-                <div key={category.id}>
-                  <Link to={`/admin/category/${category.id}`} className='title tag is-white is-large'>{category.name}</Link>
+                <div key={category.id} className='box'>
+                  <Link to={`/category/${category.id}`} className='title tag is-white is-large'>{category.name}</Link>
                 </div>
-              ) 
+              )
             })}
         </div>
       </div>

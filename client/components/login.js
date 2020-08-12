@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Button, useToast } from '@chakra-ui/core';
+import { Button, useToast, FormControl, FormLabel, Input, Flex } from '@chakra-ui/core';
 import { connect } from 'react-redux';
-import { loginThunk } from '../store/actionCreators';
+import { loginThunk } from '../store/userActions';
 
-const Login = ({ login, user }) => {
+const Login = ({ login }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const toast = useToast();
@@ -24,56 +24,50 @@ const Login = ({ login, user }) => {
   };
 
   return (
-    <form className='form'>
-      <label
-        htmlFor='username'
-        className='label'
+    <Flex
+      direction='column'
+    >
+      <FormControl
+        color='black'
+        isRequired
       >
-        Username:
-        <input
+        <FormLabel htmlFor="username">Username</FormLabel>
+        <Input
           type="text"
-          value={username}
           id="username"
-          placeholder="rebelalliance"
-          onChange={
-            (e) => setUsername(e.target.value)
-          }
-          className='input'
+          bg='#E2E8F0'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
-      </label>
-      <label
-        htmlFor='username'
-        className='label'
+      </FormControl>
+      <FormControl
+        color='black'
+        isRequired
       >
-        Password:
-        <input
+        <FormLabel htmlFor="password">Password</FormLabel>
+        <Input
           type="password"
-          value={password}
           id="password"
-          placeholder="usetheforce"
-          required
-          onChange={
-            (e) => setPassword(e.target.value)
-          }
-          className='input'
+          bg='#E2E8F0'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-      </label>
+      </FormControl>
       <Button
         type="submit"
         onClick={handleSubmit}
         size='lg'
         variantColor='green'
+        m='1em'
       >
         Login
       </Button>
-      <p>{user && user.message}</p>
-    </form>
+    </Flex>
   );
 };
 
-const mapStateToProps = ({ user }) => ({ user });
 const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => dispatch(loginThunk(username, password)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

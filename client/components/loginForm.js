@@ -4,7 +4,7 @@ import { Flex } from "@chakra-ui/core";
 import Login from './login';
 import Logout from './logout';
 import Loading from './loading';
-import { whoami } from '../store/actionCreators';
+import { whoami } from '../store/userActions';
 
 const LoginForm = ({ user, whoAmI, loading }) => {
   useEffect(() => {

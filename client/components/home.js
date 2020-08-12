@@ -1,13 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Categories from './categories';
 
 const Home = () => {
   return (
-    <div>
-      <h2>Welcome</h2>
-      <Categories />
-    </div>
+    <div className='homeHeroImg' />
   )
 };
 

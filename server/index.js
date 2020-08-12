@@ -1,19 +1,23 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const chalk = require('chalk');
+const dotenv = require('dotenv');
 const { sync } = require('./db/db');
 const routes = require('./routes');
 const { Session, User, Cart } = require('./db/models');
+const { noDirectAccess, adminApiSecurityCheck, accessDeniedResponse } = require('./utils')
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/client/assets', express.static(path.join(__dirname, '../client/assets')))
-app.use(express.static(path.join(__dirname, '../dist')))
-app.use('/admin', express.static(path.join(__dirname, '../dist')))
-
+app.use('/client/assets', express.static(path.join(__dirname, '../client/assets')));
+app.use(express.static(path.join(__dirname, '../dist')));
 app.use(cookieParser());
+
+dotenv.config();
 
 app.use(async (req, res, next) => {
 
@@ -78,9 +82,25 @@ app.use(async (req, res, next) => {
 
 });
 
+app.use('/admin', (req, res, next) => {
+  try {
+    adminApiSecurityCheck(req)
+    next();
+  } catch (err) {
+    accessDeniedResponse(err, res)
+  }
+});
+app.use('/admin', express.static(path.join(__dirname, '../dist')));
+app.use('/checkout', express.static(path.join(__dirname, '../dist')));
+
 routes.forEach(({ url, router }) => {
-  app.use(url, router)
-})
+  app.use(url, (req, res, next) => {
+    noDirectAccess(req, res, next);
+  });
+  app.use(url, router);
+});
+
+
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
@@ -94,5 +114,5 @@ app.use((err, req, res) => {
 // sync the db then start the server
 sync(false)
   .then(() => {
-    app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
+    app.listen(PORT, () => console.log(chalk.cyan(`listening on port: ${PORT}`)));
   })

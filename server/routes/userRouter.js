@@ -1,25 +1,39 @@
 const { Router } = require("express");
+const chalk = require("chalk");
+const bcrypt = require("bcrypt");
+const { adminApiSecurityCheck, accessDeniedResponse } = require('../utils');
+const { User, Session, Cart, ProductCart } = require("../db/models/index");
+const Product = require("../db/models/product");
+
 
 const userRouter = Router();
-const bcrypt = require("bcrypt");
-const chalk = require("chalk");
 
-const { User, Session } = require("../db/models/index");
-const Cart = require("../db/models/cart");
 
+userRouter.get('/whoami', (req, res) => {
+  if (req.user) {
+    res.send({
+      username: req.user.username,
+      loggedIn: true,
+      role: req.user.role,
+    });
+  } else {
+    res.send({
+      username: null,
+      loggedIn: false,
+    });
+  }
+});
 
 //
 // LOGIN FLOW
 //
 userRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body)
   const user = await User.findOne({
     where: {
       username,
     },
   });
-  console.log(user)
   if (user) {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
@@ -35,7 +49,20 @@ userRouter.post("/login", async (req, res) => {
           UserId: user.id
         }
       });
+      const guestCart = await Cart.findByPk(req.cart_id);
+      const guestItems = await ProductCart.findAll({
+        where: {
+          cartId: req.cart_id
+        }
+      });
       if (userCart) {
+
+        guestItems.forEach(async (pc) => {
+          const product = await Product.findByPk(pc.productId);
+          userCart.addItem(product.id, pc.quantity);
+          await product.removeCart(guestCart);
+        })
+        await guestCart.destroy();
         req.cart_id = userCart.id;
 
         res.clearCookie("cart_id");
@@ -98,21 +125,6 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get("/whoami", (req, res) => {
-  if (req.user) {
-    res.send({
-      username: req.user.username,
-      loggedIn: true,
-      role: req.user.role,
-    });
-  } else {
-    res.send({
-      username: null,
-      loggedIn: false,
-    });
-  }
-});
-
 userRouter.get("/logout", async (req, res) => {
   try {
     res.clearCookie("session_id");
@@ -127,8 +139,13 @@ userRouter.get("/logout", async (req, res) => {
 
 // Basic user API calls
 userRouter.get("/users", async (req, res) => {
-  const users = await User.findAll();
-  res.status(200).send(users);
+  try {
+    adminApiSecurityCheck(req);
+    const users = await User.findAll();
+    res.status(200).send(users);
+  } catch (err) {
+    accessDeniedResponse(err, res);
+  }
 });
 
 userRouter.post("/create", async (req, res) => {

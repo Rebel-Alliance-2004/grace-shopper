@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -16,21 +17,21 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/core';
-import { removeFromCartThunk } from '../store/actionCreators';
+import CartItem from './cartItem';
+import { removeFromCartThunk, updateCartThunk } from '../store/cartActions';
 
-const Cart = ({ cart, remove }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const Cart = ({ cart, remove, update }) => {
+  const { isOpen, onClose } = useDisclosure();
   return (
     <>
       <Flex
         align='center'
         justify='center'
         mt='1em'
+        minW='xl'
       >
         <Box
-          maxW='lg'
-          minW='md'
+          w='100%'
         >
           <Stack
             spacing={0}
@@ -40,36 +41,7 @@ const Cart = ({ cart, remove }) => {
           >
             {
               !!cart.products && cart.products.map((product) => (
-                <Flex
-                  key={product.id}
-                  align="center"
-                  justify="space-between"
-                  direction="row"
-                  bg='#4A5568'
-                  p='1em'
-                  borderBottom='1px solid #2D3748'
-                >
-                  <Heading as="h3" size="md" flexGrow='1'>
-                    {product.name}
-                  </Heading>
-                  <Text
-                    color='#A0AEC0'
-                    fontSize='xs'
-                    mr='1em'
-                  >
-                    Qty: {product.productCart.quantity}
-                  </Text>
-                  <Heading as="h2" size="sm" mr='1em'>
-                    ${+product.price * +product.productCart.quantity}
-                  </Heading>
-                  <Button
-                    variantColor='red'
-                    size='xs'
-                    onClick={() => remove(product.id)}
-                  >
-                    Remove
-                  </Button>
-                </Flex>
+                <CartItem update={update} remove={remove} product={product} key={product.id} />
               ))
             }
           </Stack>
@@ -83,13 +55,13 @@ const Cart = ({ cart, remove }) => {
             <Button
               variantColor='green'
               size='lg'
-              onClick={onOpen}
+              onClick={() => window.location.pathname = `checkout/${cart.id}`}
             >
               Checkout
             </Button>
             <Heading
               as='h3'
-              size='m'
+              size='lg'
               color='#F7FAFC'
             >
               Total: ${cart.total}
@@ -99,7 +71,9 @@ const Cart = ({ cart, remove }) => {
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent
+          color='black'
+        >
           <ModalHeader>Checkout</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -109,7 +83,7 @@ const Cart = ({ cart, remove }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variantColor="blue" mr={3} onClick={onClose}>
+            <Button variantColor="blue" mr={3} onClick={() => window.location.pathname = '/checkout'}>
               Close
             </Button>
 
@@ -122,7 +96,8 @@ const Cart = ({ cart, remove }) => {
 
 const mapStateToProps = ({ cart }) => ({ cart });
 const mapDispatchToProps = (dispatch) => ({
-  remove: (id) => dispatch(removeFromCartThunk(id))
+  remove: (id) => dispatch(removeFromCartThunk(id)),
+  update: (id, quantity) => dispatch(updateCartThunk(id, quantity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

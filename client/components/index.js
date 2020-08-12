@@ -15,6 +15,15 @@ import AdminProducts from './adminProducts';
 import AdminCategories from './adminCategories';
 import EditProduct from './editProduct';
 import AddProductForm from './addProductForm';
+import SingleCategory from './categories/singleCategory';
+import EditCategory from './editCategory';
+import AddCategoryForm from './addCategoryForm';
+import SingleProduct from './products/singleProduct';
+import Checkout from './checkout/checkout';
+import PaymentSuccess from './checkout/paymentSuccess';
+import ReviewForm from './reviewForm';
+import UserProfile from './profile';
+import PastOrder from './pastOrder';
 
 export {
   Login,
@@ -33,5 +42,14 @@ export {
   AdminCategories,
   AdminProducts,
   EditProduct,
-  AddProductForm
+  AddProductForm,
+  SingleCategory,
+  EditCategory,
+  AddCategoryForm,
+  SingleProduct,
+  Checkout,
+  PaymentSuccess,
+  ReviewForm,
+  UserProfile,
+  PastOrder,
 };

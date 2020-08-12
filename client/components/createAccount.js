@@ -9,6 +9,7 @@ import {
   Input
 } from '@chakra-ui/core';
 import createAccountThunk from '../store/userActions';
+import StrengthMeter from './strengthMeter';
 
 const CreateAccount = ({ createAccount, history }) => {
   const [email, setEmail] = useState('');
@@ -118,6 +119,12 @@ const CreateAccount = ({ createAccount, history }) => {
           isInvalid={password.length && passwordStrength < 3 && password.length < 8}
         />
       </FormControl>
+      <StrengthMeter strength={passwordStrength} />
+      <p
+        style={{ color: '#718096', fontSize: '0.75em' }}
+      >
+        password strength
+      </p>
       <Button
         type="submit"
         onClick={handleSubmit}

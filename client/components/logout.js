@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from "@chakra-ui/core";
-import { logoutThunk } from '../store/actionCreators';
+import { logoutThunk } from '../store/userActions';
 
 const Logout = ({ user, logout }) => (
   <div className='form'>
