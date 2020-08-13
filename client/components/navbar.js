@@ -22,7 +22,9 @@ const NavBar = ({ whoAmI, user }) => {
       dropDown.classList.remove('showMenu');
       svg.classList.remove('rotate');
     });
+
   }, []);
+
 
   useEffect(() => {
     if (user.role === 'admin') {

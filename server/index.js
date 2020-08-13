@@ -21,6 +21,7 @@ dotenv.config();
 
 app.use(async (req, res, next) => {
 
+  const oneYear = 1000 * 60 * 60 * 24 * 7 * 52;
   try {
     if (req.cookies.session_id && req.cookies.cart_id) {
 
@@ -45,7 +46,6 @@ app.use(async (req, res, next) => {
       next();
     }
     else {
-      const oneYear = 1000 * 60 * 60 * 24 * 7 * 52;
 
       if (!req.cookies.session_id) {
         const session = await Session.create();

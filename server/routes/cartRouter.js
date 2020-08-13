@@ -1,14 +1,19 @@
 const { Router } = require("express");
+const chalk = require('chalk');
+const { syncCartAndCookie } = require('../utils')
 
 const cartRouter = Router();
-const chalk = require('chalk');
 const { Cart, Product, ProductCart } = require('../db/models/index');
 
 cartRouter.post('/add/:id', async (req, res) => {
   try {
     const { quantity } = req.query;
     const { id } = req.params;
-    const cart = await Cart.findByPk(req.cart_id);
+
+    // defends agains bugs from re-seeding the db
+    // creates a new cart or returns the currently active cart
+    const [cart, shouldClearCookie] = await syncCartAndCookie(req);
+
     await cart.addItem(id, quantity);
     const updatedCart = await Cart.findOne({
       where: {
@@ -17,7 +22,21 @@ cartRouter.post('/add/:id', async (req, res) => {
       include: [Product],
     });
     console.log(chalk.cyan('Product Added'));
-    res.send(updatedCart);
+
+    const oneYear = 1000 * 60 * 60 * 24 * 365;
+
+
+    if (shouldClearCookie) {
+      res.clearCookie('cart_id')
+        .cookie('cart_id', updatedCart.id, {
+          path: '/',
+          expires: new Date(Date.now() + oneYear),
+        })
+        .send(updatedCart)
+    } else {
+      res.send(updatedCart);
+    }
+
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -52,31 +71,31 @@ cartRouter.put('/update/:id', async (req, res) => {
   }
 })
 
-cartRouter.put('/updateCart/:id', async (req, res)=>{
-  try{
-    const { id } =req.params;
-    const cart = await Cart.findOne({where: {id}})
-    cart.completed=true;
+cartRouter.put('/updateCart/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cart = await Cart.findOne({ where: { id } })
+    cart.completed = true;
     const { completed } = cart
-    await Cart.update({completed}, { where: { id } })
-    
+    await Cart.update({ completed }, { where: { id } })
+
     res.clearCookie("cart_id");
     const newCart = await Cart.create();
-    
-    const oneWeek = 1000 * 60 * 60 * 24 * 7;
-    
+
+    const oneYear = 1000 * 60 * 60 * 24 * 365;
+
     res.cookie("cart_id", newCart.id, {
       path: "/",
-      expires: new Date(Date.now() + oneWeek),
+      expires: new Date(Date.now() + oneYear),
     });
-    
-    req.cart_id = newCart.id;  
-    
+
+    req.cart_id = newCart.id;
+
     await newCart.setUser(req.user);
 
     res.sendStatus(200)
   }
-  catch (err){
+  catch (err) {
     console.log(err)
   }
 })
@@ -102,7 +121,7 @@ cartRouter.get('/get', async (req, res) => {
   }
 });
 
-cartRouter.get('/get/carts', async (req, res)=>{
+cartRouter.get('/get/carts', async (req, res) => {
   try {
     const carts = await Cart.findAll({
       where: {
@@ -112,7 +131,7 @@ cartRouter.get('/get/carts', async (req, res)=>{
     });
     res.send(carts)
   }
-  catch (err){
+  catch (err) {
     console.log(err)
   }
 })
