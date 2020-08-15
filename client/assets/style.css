@@ -43,6 +43,7 @@ nav {
 	align-items: center;
 	font-family: 'Righteous', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 	padding: 0 2em;
+	z-index: 50;
 }
 
 a.navLink {
@@ -52,6 +53,10 @@ a.navLink {
 
 a.navLink:hover {
 	color: #718096;
+}
+
+.dropContainer > a.navLink:hover {
+	z-index: 100;
 }
 
 .heading,
@@ -94,6 +99,7 @@ a.heading:hover {
 	display: none;
 	z-index: 10;
 	padding-top: 1.5em;
+	/* margin-top: 0.5em; */
 }
 
 .dropContainer > a svg {

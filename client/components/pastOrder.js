@@ -34,7 +34,7 @@ const PastOrder = (props) => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1 className='title' style={{ color: 'white' }}> Order Number: {archivedCart[0].id.slice(0, 8)}</h1>
+      <h1 className='title' style={{ color: 'white' }}> Order Number: {carts && archivedCart[0].id.slice(0, 8)}</h1>
       <table className='table' style={{ margin: 'auto' }}>
         <thead>
           <tr>

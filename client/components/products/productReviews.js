@@ -13,11 +13,12 @@ const ProductReviews = (props) => {
   return (
     props.reviews && props.reviews.filter((review) => review.productId === props.productId)).map((prodReview) => {
       return (
-        <>
-          <div style={{ fontWeight: 'bold' }}>{prodReview.reviewTitle}</div>
+        <div key={prodReview.id}>
+          <div style={{ fontWeight: 'bold' }}>{prodReview.reviewTitle}&nbsp;&nbsp;{prodReview.starRating}/5</div>
           <div style={{ textAlign: 'center' }}>&quot;{prodReview.reviewText}&quot;</div>
+          <div style={{ textAlign: 'right', fontStyle: 'italic' }}>-{prodReview.User.username}</div>
           <br />
-        </>
+        </div>
       )
     }
     )
