@@ -14,7 +14,9 @@ class AddProductForm extends Component {
       price: '',
       description: '',
       categoryId: '',
-      categories: []
+      categories: [],
+      imgSrcSm:'',
+      imgSrcLg:''
     }
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,19 +32,23 @@ class AddProductForm extends Component {
   }
 
   handleSubmit() {
-    const { name, price, description, categoryId } = this.state;
+    const { name, price, description, categoryId, imgSrcSm, imgSrcLg } = this.state;
     const newProduct = {
       name,
       price,
       description,
-      categoryId
+      categoryId,
+      imgSrcLg,
+      imgSrcSm
     }
     this.props.addProduct(newProduct)
     this.setState({
       name: '',
       price: '',
       description: '',
-      categoryId: ''
+      categoryId: '',
+      imgSrcLg:'',
+      imgSrcSm:''
     })
 
   }
@@ -76,6 +82,24 @@ class AddProductForm extends Component {
             <Input
               value={this.state.description}
               name='description'
+              className='input'
+              onChange={this.handleInput}
+            />
+            <label>
+              Small Image URL:
+            </label>
+            <Input
+              value={this.state.imgSrcSm}
+              name='imgSrcSm'
+              className='input'
+              onChange={this.handleInput}
+            />
+            <label>
+              Large Image URL:
+            </label>
+            <Input
+              value={this.state.imgSrcLg}
+              name='imgSrcLg'
               className='input'
               onChange={this.handleInput}
             />
