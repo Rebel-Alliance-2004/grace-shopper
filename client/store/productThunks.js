@@ -29,7 +29,10 @@ export const addProductThunk = (obj) => async (dispatch) => {
     name: obj.name,
     description: obj.description,
     categoryId: obj.categoryId,
+    imgSrcLg: obj.imgSrcLg,
+    imgSrcSm: obj.imgSrcSm
   }
+  console.log(newProduct)
   return axios
     .post('/api/products', newProduct)
     .then((res) => {

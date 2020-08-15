@@ -72,7 +72,7 @@ function CheckoutForm(props) {
         onChange={(e) => setEmail(e.target.value)}
       />
       <CardSection />
-      <button disabled={!stripe} type='submit' className='button is-danger' style={{marginTop:'10px'}}>Confirm order</button>
+      <button disabled={!stripe||!email} type='submit' className='button is-danger' style={{marginTop:'10px'}}>Confirm order</button>
     </form>
   );
 }

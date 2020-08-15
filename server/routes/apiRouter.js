@@ -27,12 +27,14 @@ apiRouter.get("/categories", async (req, res) => {
 apiRouter.post("/products", async (req, res) => {
   try {
     adminApiSecurityCheck(req);
-    const { price, name, description, categoryId } = req.body;
+    const { price, name, description, categoryId, imgSrcLg, imgSrcSm } = req.body;
     const createdProduct = await Product.create({
       price,
       name,
       description,
-      categoryId
+      categoryId,
+      imgSrcLg,
+      imgSrcSm
     })
     res.status(201).send({
       product: createdProduct,
