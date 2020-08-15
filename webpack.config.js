@@ -18,7 +18,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Grace Shopper',
             template: path.join(__dirname, './client/template/index.ejs')
-        })
+        }),
     ],
     module: {
         rules: [

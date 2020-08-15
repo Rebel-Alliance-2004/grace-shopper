@@ -5,6 +5,7 @@ const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/grac
 const db = new Sequelize(DATABASE_URL, { logging: false });
 
 
+
 const sync = async (force = false) => {
     try {
         await db.sync({ force })
