@@ -29,10 +29,7 @@ const ProductPage = ({ product, addToCart, categories, getCategories }) => {
   const categoryName = !!categories && !!categories.length && categories.find(c => c.id === product.categoryId).name;
 
   return (
-    <Flex
-      direction='column'
-      align='center'
-    >
+    <>
       <Breadcrumb
         style={{
           color: 'white',
@@ -52,19 +49,85 @@ const ProductPage = ({ product, addToCart, categories, getCategories }) => {
         </BreadcrumbItem>
       </Breadcrumb>
       <Flex
-        justify='center'
-        m='2em'
-        wrap='wrap'
+        direction='column'
+        align='center'
       >
-        <Flex m='1em'>
-          <Image
-            src={product.imgSrcLg}
+        <Flex
+          justify='center'
+          m='2em'
+          wrap='wrap'
+        >
+          <Flex m='1em'>
+            <Image
+              src={product.imgSrcLg}
+              w={['300px', '300px', '400px', '400px']}
+              h={['300px', '300px', '400px', '400px']}
+            />
+          </Flex>
+          <Flex
             w={['300px', '300px', '400px', '400px']}
-            h={['300px', '300px', '400px', '400px']}
-          />
+            bg='#2D3748'
+            m='1em'
+            direction='column'
+            justifyContent='space-between'
+            p='1em'
+          >
+            <Heading
+              as='h2'
+              size='lg'
+              className='heading'
+              textAlign='center'
+              marginBottom='1em'
+            >
+              {product.name}
+            </Heading>
+            <p>
+              {product.description}
+            </p>
+            <Flex
+              justify='space-between'
+              align='center'
+            >
+              <Flex
+                align='center'
+                justify='center'
+                m='1em'
+                w={['300px', '300px', '400px', '400px']}
+              >
+                <Heading as='h4' size='lg'>
+                  ${+product.price}
+                </Heading>
+              </Flex>
+              <Flex
+                justify='center'
+                align='center'
+              >
+                <Input
+                  size={['xs', 'sm']}
+                  width='3em'
+                  textAlign='center'
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  color='black'
+                  placeholder='1'
+                  m={['0.5em', '1em']}
+                />
+                <Button
+                  variantColor="green"
+                  size={['md', 'md', 'lg']}
+                  p='0.5em 0.25em'
+                  onClick={(e) => handleAddToCart(e, product.id, quantity)}
+                >
+                  Add to Cart
+                </Button>
+              </Flex>
+            </Flex>
+          </Flex>
         </Flex>
         <Flex
-          w={['300px', '300px', '400px', '400px']}
+          justify='center'
+          align='center'
+          w={['400px', '400px', '400px', 'calc(800px + 2em)']}
           bg='#2D3748'
           m='1em'
           direction='column'
@@ -78,73 +141,12 @@ const ProductPage = ({ product, addToCart, categories, getCategories }) => {
             textAlign='center'
             marginBottom='1em'
           >
-            {product.name}
+            Product Reviews
           </Heading>
-          <p>
-            {product.description}
-          </p>
-          <Flex
-            justify='space-between'
-            align='center'
-          >
-            <Flex
-              align='center'
-              justify='center'
-              m='1em'
-              w={['300px', '300px', '400px', '400px']}
-            >
-              <Heading as='h4' size='lg'>
-                ${+product.price}
-              </Heading>
-            </Flex>
-            <Flex
-              justify='center'
-              align='center'
-            >
-              <Input
-                size={['xs', 'sm']}
-                width='3em'
-                textAlign='center'
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                color='black'
-                placeholder='1'
-                m={['0.5em', '1em']}
-              />
-              <Button
-                variantColor="green"
-                size={['md', 'md', 'lg']}
-                p='0.5em 0.25em'
-                onClick={(e) => handleAddToCart(e, product.id, quantity)}
-              >
-                Add to Cart
-              </Button>
-            </Flex>
-          </Flex>
+          <ProductReviews productId={product.id} />
         </Flex>
       </Flex>
-      <Flex
-        justify='center'
-        align='center'
-        w={['400px', '400px', '400px', 'calc(800px + 2em)']}
-        bg='#2D3748'
-        m='1em'
-        direction='column'
-        justifyContent='space-between'
-        p='1em'
-      >
-        <Heading
-          as='h2'
-          size='lg'
-          className='heading'
-          textAlign='center'
-          marginBottom='1em'
-        >
-          Product Reviews
-        </Heading>
-        <ProductReviews productId={product.id} />
-      </Flex>
-    </Flex>
+    </>
   );
 }
 
