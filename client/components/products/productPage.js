@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Flex, Image, Heading, Button, Input, useToast, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/core';
 import { addToCartThunk } from '../../store/cartActions'
+import ProductReviews from './productReviews'
+import { getCategoriesThunk } from '../../store/actionCreators'
 
-const ProductPage = ({ product, addToCart, categories }) => {
+const ProductPage = ({ product, addToCart, categories, getCategories }) => {
   const [quantity, setQuantity] = useState(1);
 
   const toast = useToast();
@@ -20,10 +22,17 @@ const ProductPage = ({ product, addToCart, categories }) => {
     })
   };
 
-  const categoryName = categories.find(c => c.id === product.categoryId).name;
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  const categoryName = !!categories && !!categories.length && categories.find(c => c.id === product.categoryId).name;
 
   return (
-    <div>
+    <Flex
+      direction='column'
+      align='center'
+    >
       <Breadcrumb
         style={{
           color: 'white',
@@ -114,7 +123,28 @@ const ProductPage = ({ product, addToCart, categories }) => {
           </Flex>
         </Flex>
       </Flex>
-    </div>
+      <Flex
+        justify='center'
+        align='center'
+        w={['400px', '400px', '400px', 'calc(800px + 2em)']}
+        bg='#2D3748'
+        m='1em'
+        direction='column'
+        justifyContent='space-between'
+        p='1em'
+      >
+        <Heading
+          as='h2'
+          size='lg'
+          className='heading'
+          textAlign='center'
+          marginBottom='1em'
+        >
+          Product Reviews
+        </Heading>
+        <ProductReviews productId={product.id} />
+      </Flex>
+    </Flex>
   );
 }
 
@@ -122,6 +152,7 @@ const mapStateToProps = ({ categories }) => ({ categories });
 
 const mapDispatchToProps = (dispatch) => ({
   addToCart: (productId, quantity = 1) => dispatch(addToCartThunk(productId, quantity)),
+  getCategories: () => dispatch(getCategoriesThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

@@ -53,8 +53,9 @@ const PastOrder = (props) => {
                   <td>{prod.name}</td>
                   <td><Image
                     src={prod.imgSrcLg}
-                    w='150px'
-                    h='150px'
+                    size='small'
+                    maxH='100px'
+                    maxW='100px'
                   />
                   </td>
                   <td>${prod.price}</td>
