@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Review } = require('../db/models')
+const { Review, User } = require('../db/models')
 
 
 const reviewRouter = Router()
@@ -19,7 +19,11 @@ reviewRouter.post('/', async (req, res) => {
 
 reviewRouter.get("/", async (req, res) => {
   try {
-    const reviews = await Review.findAll();
+    const reviews = await Review.findAll(
+      {
+        include: [User]
+      }
+    );
     res.send(reviews);
   } catch (e) {
     console.log(e)
